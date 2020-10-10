@@ -3493,6 +3493,9 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              "afl_banner        : %s\n"
              "afl_version       : " VERSION "\n"
              "target_mode       : %s%s%s%s%s%s%s\n"
+/* MDZZ Modification - Begin */
+             "cov_total         : %llu\n"
+/* MDZZ Modification - End */
              "command_line      : %s\n"
              "slowest_exec_ms   : %llu\n",
              start_time / 1000, get_cur_time() / 1000, getpid(),
@@ -3508,6 +3511,9 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
              persistent_mode ? "persistent " : "", deferred_mode ? "deferred " : "",
              (qemu_mode || dumb_mode || no_forkserver || crash_mode ||
               persistent_mode || deferred_mode) ? "" : "default",
+/* MDZZ Modification - Begin */
+             total_covs,
+/* MDZZ Modification - End */
              orig_cmdline, slowest_exec_ms);
              /* ignore errors */
 
@@ -3568,7 +3574,7 @@ static void maybe_update_plot_file(double bitmap_cvg, double eps) {
 */
 
   fprintf(plot_file,
-          "%llu, %llu, %u, %u, %u, %u, %0.02f%%, %llu, %llu, %u, %0.02f %llu %llu\n",
+          "%llu, %llu, %u, %u, %u, %u, %0.02f%%, %llu, %llu, %u, %0.02f, %llu, %llu\n",
           get_cur_time() / 1000, queue_cycle - 1, current_entry, queued_paths,
           pending_not_fuzzed, pending_favored, bitmap_cvg, unique_crashes,
           unique_hangs, max_depth, eps, total_covs, total_execs);
