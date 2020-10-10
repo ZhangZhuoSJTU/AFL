@@ -3466,6 +3466,11 @@ static void write_stats_file(double bitmap_cvg, double stability, double eps) {
     last_eps  = eps;
   }
 
+/* MDZZ Modification - Begin */
+    total_covs = 0;
+    for (u32 i = 0; i < MAP_SIZE; i++) if (virgin_bits[i] != 0xFF) total_covs++;
+/* MDZZ Modification - End */
+
   fprintf(f, "start_time        : %llu\n"
              "last_update       : %llu\n"
              "fuzzer_pid        : %u\n"
